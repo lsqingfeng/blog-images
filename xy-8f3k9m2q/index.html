@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
+  <title>选品工作台</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card-bg: #ffffff;
+      --text: #191c21;
+      --text-sub: #646a73;
+      --text-muted: #8f959e;
+      --border: #dee0e3;
+      --primary: #ff5000; /* 闲鱼橙 */
+      --primary-hover: #e04600;
+      --primary-bg: #fff1eb;
+      --green: #2ba245;
+      --green-bg: #eaf6ec;
+      --blue: #3370ff;
+      --blue-bg: #eef3ff;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stats-badge {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--primary-bg);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .header-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 13px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .filter-tab {
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .filter-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .container {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 14px 12px;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .product-card.is-published {
+      opacity: 0.65;
+      background: #fafafa;
+      border: 1px dashed var(--border);
+      filter: grayscale(0.2);
+    }
+    .card-head {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f0f1f3;
+    }
+    .sku-badge {
+      font-family: Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .status-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .status-pill.pending {
+      color: var(--primary);
+      background: var(--primary-bg);
+    }
+    .status-pill.done {
+      color: var(--green);
+      background: var(--green-bg);
+    }
+    .card-body {
+      padding: 14px;
+    }
+    .product-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .cover-wrap {
+      background: #111;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 14px;
+      position: relative;
+      text-align: center;
+    }
+    .cover-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: auto;
+      -webkit-user-select: auto;
+      -webkit-touch-callout: default;
+    }
+    .img-save-tip {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 12px;
+      padding: 7px 10px;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title-capsules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .title-capsule {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .title-capsule.active {
+      background: var(--blue-bg);
+      border-color: var(--blue);
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .title-box {
+      background: #f7f8fa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.05s ease, opacity 0.15s ease;
+      text-decoration: none;
+    }
+    .btn:active {
+      transform: scale(0.985);
+      opacity: 0.9;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-blue {
+      background: var(--blue);
+      color: #fff;
+    }
+    .btn-green {
+      background: var(--green);
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #f0f2f5;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .details-toggle {
+      font-size: 12px;
+      color: var(--blue);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    .copy-preview-box {
+      display: none;
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-size: 12px;
+      color: var(--text-sub);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+    .copy-preview-box.open {
+      display: block;
+    }
+    .meta-footer {
+      border-top: 1px solid #f0f1f3;
+      padding-top: 10px;
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(25, 28, 33, 0.92);
+      color: #fff;
+      font-size: 14px;
+      padding: 10px 18px;
+      border-radius: 20px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    #clipboard-textarea {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 2em;
+      height: 2em;
+      opacity: 0;
+      font-size: 16px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="header-title">
+      <span>选品工作台</span>
+      <span class="stats-badge" id="stats-badge">待发 0 / 已发 0</span>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" onclick="location.reload()">刷新</button>
+      <button class="header-btn" onclick="resetAllState()">重置</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <div class="filter-tab active" data-filter="all" onclick="setFilter('all', this)">全部 (<span id="count-all">0</span>)</div>
+    <div class="filter-tab" data-filter="pending" onclick="setFilter('pending', this)">待上架 (<span id="count-pending">0</span>)</div>
+    <div class="filter-tab" data-filter="published" onclick="setFilter('published', this)">已上架 (<span id="count-published">0</span>)</div>
+  </div>
+</header>
+
+<div class="container" id="cards-container">
+  <!-- Dynamic cards inserted here -->
+</div>
+
+<textarea id="clipboard-textarea" readonly></textarea>
+<div id="toast" class="toast">已复制</div>
+
+<script>
+  const PRODUCTS_DATA = [
+  {
+    "sku": "SKU-002-CREATOR-WORKFLOW-2026",
+    "product_name": "2026自媒体自动化运营实战指南",
+    "price": "19.9元",
+    "titles": [
+      "2026自媒体自动化运营实战指南"
+    ],
+    "description": "",
+    "delivery": ""
+  },
+  {
+    "sku": "SKU-003-KIDS-HABIT-2026",
+    "product_name": "2026儿童自律习惯养成与积分打卡打印表合集",
+    "price": "9.9元",
+    "titles": [
+      "2026儿童自律习惯养成与积分打卡打印表合集"
+    ],
+    "description": "",
+    "delivery": ""
+  },
+  {
+    "sku": "SKU-004-RESUME-INTERVIEW-2026",
+    "product_name": "2026求职跳槽黄金一页纸简历模板与面试通关指南",
+    "price": "12.9元",
+    "titles": [
+      "2026求职跳槽黄金一页纸简历模板与面试通关指南"
+    ],
+    "description": "",
+    "delivery": ""
+  },
+  {
+    "sku": "SKU-001-OFFICE-WRITING-2026",
+    "product_name": "2026职场高效写作与汇报模板大全",
+    "price": "9.9元",
+    "titles": [
+      "2026职场高效写作与汇报模板大全"
+    ],
+    "description": "",
+    "delivery": ""
+  }
+];
+  const CDN_BASE = "https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xy-8f3k9m2q/";
+  const LOCAL_STORAGE_KEY = "xianyu_publish_state_v1";
+  
+  let currentFilter = "all";
+  let activeTitles = {}; // {sku: titleIndex}
+  
+  // 初始化本地持久化状态
+  function getPublishState() {
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    // 首次进入默认: SKU-001 (职场模板) 已上架沉底
+    return { "SKU-001-OFFICE-WRITING-2026": true };
+  }
+  
+  function savePublishState(state) {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+  
+  function resetAllState() {
+    if (confirm("确定重置所有商品的上架状态吗？")) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      render();
+      showToast("状态已重置");
+    }
+  }
+
+  function setFilter(type, el) {
+    currentFilter = type;
+    document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+    el.classList.add("active");
+    render();
+  }
+
+  function togglePublish(sku) {
+    const state = getPublishState();
+    state[sku] = !state[sku];
+    savePublishState(state);
+    render();
+    showToast(state[sku] ? "已标记为【已上架】" : "已恢复为【待上架】");
+  }
+
+  function selectTitle(sku, index) {
+    activeTitles[sku] = index;
+    const box = document.getElementById("title-box-" + sku);
+    const prod = PRODUCTS_DATA.find(p => p.sku === sku);
+    if (box && prod && prod.titles[index]) {
+      box.textContent = prod.titles[index];
+    }
+    const container = document.getElementById("capsules-" + sku);
+    if (container) {
+      container.querySelectorAll(".title-capsule").forEach((cap, i) => {
+        if (i === index) cap.classList.add("active");
+        else cap.classList.remove("active");
+      });
+    }
+  }
+
+  function togglePreview(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("open");
+  }
+
+  function copyText(text, btnText) {
+    let success = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(btnText ? "已复制: " + btnText : "已复制到剪贴板");
+      }).catch(() => {
+        fallbackCopy(text, btnText);
+      });
+    } else {
+      fallbackCopy(text, btnText);
+    }
+  }
+
+  function fallbackCopy(text, btnText) {
+    const ta = document.getElementById("clipboard-textarea");
+    ta.value = text;
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, 99999);
+    try {
+      const ok = document.execCommand("copy");
+      if (ok) showToast(btnText ? "已复制: " + btnText : "已复制到剪贴板");
+      else alert("复制失败，请长按文本手动复制");
+    } catch (e) {
+      alert("复制遇到权限限制，请手动长按复制");
+    }
+  }
+
+  function copyCurrentTitle(sku) {
+    const prod = PRODUCTS_DATA.find(p => p.sku === sku);
+    if (!prod) return;
+    const index = activeTitles[sku] || 0;
+    const title = prod.titles[index] || prod.titles[0];
+    copyText(title, "选中标题");
+  }
+
+  function copyFullListing(sku) {
+    const prod = PRODUCTS_DATA.find(p => p.sku === sku);
+    if (!prod) return;
+    const index = activeTitles[sku] || 0;
+    const title = prod.titles[index] || prod.titles[0];
+    const fullText = title + "\n\n" + prod.description;
+    copyText(fullText, "完整发布文案");
+  }
+
+  function copyDelivery(sku) {
+    const prod = PRODUCTS_DATA.find(p => p.sku === sku);
+    if (!prod) return;
+    copyText(prod.delivery, "自动发货附言");
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 1800);
+  }
+
+  function render() {
+    const state = getPublishState();
+    const container = document.getElementById("cards-container");
+    container.innerHTML = "";
+
+    let pendingCount = 0;
+    let publishedCount = 0;
+
+    // 排序: 待上架排前, 已上架沉底
+    const sorted = [...PRODUCTS_DATA].sort((a, b) => {
+      const aDone = !!state[a.sku];
+      const bDone = !!state[b.sku];
+      if (aDone === bDone) return 0;
+      return aDone ? 1 : -1;
+    });
+
+    sorted.forEach(p => {
+      const isDone = !!state[p.sku];
+      if (isDone) publishedCount++;
+      else pendingCount++;
+    });
+
+    document.getElementById("stats-badge").textContent = `待发 ${pendingCount} / 已发 ${publishedCount}`;
+    document.getElementById("count-all").textContent = PRODUCTS_DATA.length;
+    document.getElementById("count-pending").textContent = pendingCount;
+    document.getElementById("count-published").textContent = publishedCount;
+
+    sorted.forEach(prod => {
+      const isDone = !!state[prod.sku];
+      if (currentFilter === "pending" && isDone) return;
+      if (currentFilter === "published" && !isDone) return;
+
+      if (activeTitles[prod.sku] === undefined) {
+        activeTitles[prod.sku] = 0;
+      }
+      const curTitleIndex = activeTitles[prod.sku];
+      const curTitle = prod.titles[curTitleIndex] || prod.titles[0];
+
+      const card = document.createElement("div");
+      card.className = "product-card" + (isDone ? " is-published" : "");
+
+      const coverRelPath = `./covers/${prod.sku}.png`;
+      const coverCdnPath = `${CDN_BASE}covers/${prod.sku}.png`;
+
+      let capsulesHtml = "";
+      prod.titles.forEach((t, idx) => {
+        const activeClass = idx === curTitleIndex ? " active" : "";
+        capsulesHtml += `<div class="title-capsule${activeClass}" onclick="selectTitle('${prod.sku}', ${idx})">${idx + 1}号标题</div>`;
+      });
+
+      card.innerHTML = `
+        <div class="card-head">
+          <span class="sku-badge">${prod.sku}</span>
+          <span class="status-pill ${isDone ? "done" : "pending"}">${isDone ? "已上架" : "待上架"}</span>
+        </div>
+        <div class="card-body">
+          <div class="product-title">${prod.product_name}</div>
+          
+          <div class="cover-wrap">
+            <div class="img-save-tip">长按下方主图 0.5 秒存入手机相册</div>
+            <img class="cover-img" 
+                 src="${coverRelPath}" 
+                 alt="${prod.product_name}" 
+                 onerror="this.onerror=null; this.src='${coverCdnPath}';">
+          </div>
+
+          <div class="section-title">
+            <span>备选标题 (点击切换)</span>
+            <button class="details-toggle" onclick="copyCurrentTitle('${prod.sku}')">仅复制标题</button>
+          </div>
+          <div class="title-capsules" id="capsules-${prod.sku}">
+            ${capsulesHtml}
+          </div>
+          <div class="title-box" id="title-box-${prod.sku}">${curTitle}</div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="copyFullListing('${prod.sku}')">
+              一键复制发布文案 (首行标题+正文)
+            </button>
+            <button class="btn btn-green" onclick="copyDelivery('${prod.sku}')">
+              复制自动发货附言 (含提取直链)
+            </button>
+            <a class="btn btn-secondary btn-sm" href="${coverRelPath}" download="${prod.sku}_主图.png">
+              ⬇️ 原图下载
+            </a>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:8px;">
+            <button class="details-toggle" onclick="togglePreview('desc-box-${prod.sku}')">查看详情正文</button>
+            <button class="details-toggle" onclick="togglePreview('deliv-box-${prod.sku}')">查看发货附言</button>
+          </div>
+          <div class="copy-preview-box" id="desc-box-${prod.sku}">${prod.description}</div>
+          <div class="copy-preview-box" id="deliv-box-${prod.sku}">${prod.delivery}</div>
+
+          <div class="meta-footer">
+            <span>参考定价: <strong>${prod.price}</strong></span>
+            <button class="btn btn-secondary btn-sm" style="width:auto; padding:5px 12px;" onclick="togglePublish('${prod.sku}')">
+              ${isDone ? "↩️ 恢复待发" : "✅ 标记已上架"}
+            </button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // 首次渲染
+  render();
+</script>
+
+</body>
+</html>
