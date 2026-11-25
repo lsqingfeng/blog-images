@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<title>小红书壁纸 3 单品手机发品台</title>
+<style>
+  :root { --bg:#F5F7FA; --card:#FFFFFF; --ink:#161A22; --muted:#647084; --line:#E3E8F0; --accent:#E85D3F; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--bg); color:var(--ink); padding-bottom:44px; }
+  header { position:sticky; top:0; z-index:30; background:rgba(255,255,255,0.96); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:12px 14px 10px; }
+  .head-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+  h1 { margin:0; font-size:17px; font-weight:700; }
+  .mode-pill { font-size:11px; color:var(--muted); background:#EEF2F7; padding:3px 8px; border-radius:999px; white-space:nowrap; }
+  .tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .tab-btn { border:1px solid var(--line); background:#F8FAFC; color:var(--ink); border-radius:12px; padding:8px 4px; font-size:12px; font-weight:700; display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
+  .tab-btn span { font-size:11px; color:var(--accent); font-weight:700; }
+  .tab-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .tab-btn.active span { color:#FF9C85; }
+  main { max-width:680px; margin:0 auto; padding:12px; }
+  .panel { display:none; flex-direction:column; gap:12px; }
+  .panel.active { display:flex; }
+  .summary-card, .step-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; }
+  .sum-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .sku-tag { font-size:11px; font-weight:700; color:#334155; background:#EEF2F7; padding:3px 8px; border-radius:999px; }
+  .price-tag { font-size:18px; font-weight:800; color:var(--accent); }
+  .summary-card h2 { margin:0 0 10px; font-size:16px; line-height:1.4; }
+  .check-row { display:flex; gap:16px; flex-wrap:wrap; }
+  .chk { display:flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#334155; }
+  .chk input { width:18px; height:18px; accent-color:var(--ink); }
+  .step-title { font-size:14px; font-weight:700; margin-bottom:10px; line-height:1.4; }
+  .img-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .img-card { background:#F8FAFC; border:1px solid var(--line); border-radius:12px; padding:8px; display:flex; flex-direction:column; gap:6px; }
+  .img-card:first-child { grid-column:1 / -1; }
+  .img-head { display:flex; justify-content:space-between; align-items:center; gap:6px; font-size:11px; color:var(--muted); }
+  .img-head span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .img-card img { width:100%; border-radius:8px; display:block; -webkit-touch-callout:default; }
+  .mini-btn { flex-shrink:0; text-decoration:none; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:4px 8px; font-size:11px; font-weight:600; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .chip { border:1px solid var(--line); background:#F8FAFC; color:var(--ink); padding:5px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+  .chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .box { width:100%; border:1px solid var(--line); border-radius:12px; padding:10px; font-family:inherit; font-size:13px; line-height:1.55; color:var(--ink); background:#FAFBFC; resize:none; }
+  .box.short { min-height:66px; }
+  .box.mid { min-height:145px; }
+  .box.tall { min-height:220px; }
+  .lbl { display:block; font-size:12px; color:var(--muted); font-weight:600; margin-bottom:4px; }
+  .url-pill { font-family:ui-monospace,monospace; font-size:12px; background:#FFF3EF; color:#B43B20; padding:7px 10px; border-radius:10px; margin-bottom:8px; word-break:break-all; }
+  .btn-row { display:grid; grid-template-columns:1.4fr 1fr; gap:8px; margin-top:8px; }
+  .big-btn { width:100%; margin-top:8px; border:0; border-radius:12px; padding:13px 10px; font-size:15px; font-weight:700; cursor:pointer; }
+  .btn-row .big-btn { margin-top:0; }
+  .big-btn.dark { background:var(--ink); color:#fff; }
+  .big-btn.orange { background:var(--accent); color:#fff; }
+  .big-btn.ghost { background:#F1F5F9; color:var(--ink); border:1px solid var(--line); }
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(22,26,34,0.92); color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; font-weight:600; opacity:0; transition:opacity .18s; pointer-events:none; z-index:99; white-space:nowrap; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-top">
+    <h1>小红书壁纸 3 单品手机发品台</h1>
+    <span class="mode-pill">云端 5G 随时发品版</span>
+  </div>
+  <div class="tabs"><button class="tab-btn active" data-tab="prod_a" onclick="switchTab('prod_a')">商品1 · A组冬日5套<span>¥2.99</span></button><button class="tab-btn" data-tab="prod_b" onclick="switchTab('prod_b')">商品2 · B组灵动岛5套<span>¥2.99</span></button><button class="tab-btn" data-tab="prod_ab" onclick="switchTab('prod_ab')">商品3 · AB全套10款<span>¥4.99</span></button></div>
+</header>
+<main>
+            <section class="panel active" id="panel-prod_a">
+              <div class="summary-card">
+                <div class="sum-top">
+                  <span class="sku-tag">SKU-XHS-WP-V1-A</span>
+                  <span class="price-tag">¥2.99</span>
+                </div>
+                <h2>A组 · 12月冬日景深 4K 壁纸全套（5套10张）</h2>
+                <div class="check-row">
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_a_shop', this.checked)" data-state="prod_a_shop"> 商品已上架</label>
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_a_note', this.checked)" data-state="prod_a_note"> 种草笔记已发</label>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">① 本商品专属上架图（共 6 张 · 苹果长按图片 0.5 秒选“存储到照片”）</div>
+                <div class="img-grid">
+                <div class="img-card">
+                  <div class="img-head"><span>封面首图 · 00_cover_A_winter_5pack.png</span><a class="mini-btn" href="./img/a/00_cover_A_winter_5pack.jpg" download="00_cover_A_winter_5pack.jpg">下载原图</a></div>
+                  <img src="./img/a/00_cover_A_winter_5pack.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/00_cover_A_winter_5pack.jpg';}" alt="00_cover_A_winter_5pack.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 2 · A01_showcase_3x4.png</span><a class="mini-btn" href="./img/a/A01_showcase_3x4.jpg" download="A01_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/a/A01_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/A01_showcase_3x4.jpg';}" alt="A01_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 3 · A02_showcase_3x4.png</span><a class="mini-btn" href="./img/a/A02_showcase_3x4.jpg" download="A02_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/a/A02_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/A02_showcase_3x4.jpg';}" alt="A02_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 4 · A03_showcase_3x4.png</span><a class="mini-btn" href="./img/a/A03_showcase_3x4.jpg" download="A03_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/a/A03_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/A03_showcase_3x4.jpg';}" alt="A03_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 5 · A04_showcase_3x4.png</span><a class="mini-btn" href="./img/a/A04_showcase_3x4.jpg" download="A04_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/a/A04_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/A04_showcase_3x4.jpg';}" alt="A04_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 6 · A05_showcase_3x4.png</span><a class="mini-btn" href="./img/a/A05_showcase_3x4.jpg" download="A05_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/a/A05_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/a/A05_showcase_3x4.jpg';}" alt="A05_showcase_3x4.png" loading="lazy">
+                </div></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">② 商品标题（先选好再一键复制）</div>
+                <div class="chips">
+                  <button class="chip on" onclick="useTitle('prod_a', this)" data-title="苹果iOS冬日景深4K壁纸 A组5套锁屏+同色磨砂主屏 拍下自动发">主推标题</button>
+                  <button class="chip" onclick="useTitle('prod_a', this)" data-title="12月冬日极简景深锁屏壁纸 苹果时间遮挡效果 5套10张4K原图">备选标题 2</button><button class="chip" onclick="useTitle('prod_a', this)" data-title="苹果手机4K冬日雪山红柿景深壁纸 含同色磨砂主屏 自动秒发">备选标题 3</button>
+                </div>
+                <textarea class="box short" id="title-prod_a" readonly>苹果iOS冬日景深4K壁纸 A组5套锁屏+同色磨砂主屏 拍下自动发</textarea>
+                <button class="big-btn dark" onclick="copyField('title-prod_a', '商品标题')">复制商品标题</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">③ 商品详情页文案（已过合规门禁，零外链/零禁用词）</div>
+                <textarea class="box tall" id="detail-prod_a" readonly>专门按苹果全屏机型比例（1290×2796）和锁屏时间数字压边构图制作的冬日景深壁纸，拍下系统自动发出原图，不用报编号、也不用等回复。
+
+【本组包含 5 套（共 10 张 4K 无水印 PNG 原图）】
+- A01 雪岭寒松：雾蓝晨曦渐变底，雪山尖与寒松刚好压在时间数字下缘
+- A02 冬枝红柿：素雅暖白留白底，朱红柿枝带薄霜微立体感
+- A03 冰晶郁金香：冰川浅紫白渐变，半透磨砂花瓣细节干净
+- A04 初雪木屋：深靛蓝冬夜微缩木屋，屋檐暖灯与雪地光影耐看
+- A05 液态银川：深邃黑蓝底配拉丝钛银流光，搭深色边框显质感
+
+【每套都有 2 张配对图】
+1 张 4K 锁屏原图 + 1 张同色系高斯磨砂主屏图。锁屏看景深层次，解锁进桌面后图标下面干干净净不抢眼，省去自己调模糊。
+
+【设置提示】
+- 设为墙纸时先关闭“扩展墙纸”，双指微调让山尖或花枝轮廓落在时间数字下半边缘，右下角勾选“景深效果”即可（若主屏小组件挡住可先移除再试）。
+- 虚拟数字图像拍下秒发后不支持退换，请看好预览图再下单。</textarea>
+                <button class="big-btn dark" onclick="copyField('detail-prod_a', '商品详情文案')">复制详情页文案</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">④ 小红书千帆「自动发货」固定内容（含本套餐专属夸克直链）</div>
+                <div class="url-pill">https://pan.quark.cn/s/1728cd18b0b9</div>
+                <textarea class="box mid" id="delivery-prod_a" readonly>感谢下单「苹果 4K 景深壁纸 · A 组冬日景深 5 套（10 张原图）」！
+请点击下方夸克直链转存或下载全部原图（无提取码，含 A01-A05 锁屏+磨砂主屏与设置说明）：
+https://pan.quark.cn/s/1728cd18b0b9
+
+原画质提醒：请在客户端点“下载原图”存到手机相册，不要直接长按网页缩略图。
+景深技巧：设为墙纸时先在右下角点开菜单关闭“扩展墙纸”，双指微调让主体顶部轻压时间数字下缘，再勾选“景深效果”。</textarea>
+                <div class="btn-row">
+                  <button class="big-btn orange" onclick="copyField('delivery-prod_a', '自动发货全文')">复制发货全文</button>
+                  <button class="big-btn ghost" onclick="copyPlain('https://pan.quark.cn/s/1728cd18b0b9', '夸克直链')">仅复制链接</button>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">⑤ 本商品配套「小红书种草挂车笔记」（挂上方商品橱窗发）</div>
+                <label class="lbl">笔记标题</label>
+                <textarea class="box short" id="ntitle-prod_a" readonly>换上这组冬日景深壁纸，苹果锁屏终于不挡时间了</textarea>
+                <button class="big-btn dark" onclick="copyField('ntitle-prod_a', '笔记标题')">复制笔记标题</button>
+                <label class="lbl" style="margin-top:12px;">笔记正文（含话题标签）</label>
+                <textarea class="box tall" id="nbody-prod_a" readonly>入冬后想给手机换张耐看一点的新锁屏，找了半天发现很多壁纸顶上太花，时间数字看得费劲，或者怎么缩放都触发不了景深遮挡。
+
+干脆自己做了 5 套专门按 iOS 锁屏留白规律构图的冬日景深 4K 原图：
+顶部留了接近三成的干净渐变天空，不管是雪山寒松、暖白红柿枝，还是冰晶郁金香、初雪木屋和液态银流光，主体顶部都能自然压在时间数字下缘，打开景深之后立体感很舒服。
+
+每套都顺手做好了一张同色系高斯磨砂主屏图。锁屏留给构图，解锁到桌面后 App 下面干净清爽，不用再自己截屏去调模糊。
+
+5 套一共 10 张 4K 无水印 PNG 原图已经整理在小店里了，拍下系统会自动发提取地址，拿到直接就能用。
+
+#iPhone壁纸 #苹果锁屏壁纸 #景深壁纸 #冬日壁纸 #手机壁纸</textarea>
+                <button class="big-btn dark" onclick="copyField('nbody-prod_a', '笔记正文')">复制笔记正文</button>
+              </div>
+            </section>
+            <section class="panel" id="panel-prod_b">
+              <div class="summary-card">
+                <div class="sum-top">
+                  <span class="sku-tag">SKU-XHS-WP-V1-B</span>
+                  <span class="price-tag">¥2.99</span>
+                </div>
+                <h2>B组 · iOS 灵动岛互动 &amp; 暗夜机械 4K 壁纸（5套10张）</h2>
+                <div class="check-row">
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_b_shop', this.checked)" data-state="prod_b_shop"> 商品已上架</label>
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_b_note', this.checked)" data-state="prod_b_note"> 种草笔记已发</label>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">① 本商品专属上架图（共 6 张 · 苹果长按图片 0.5 秒选“存储到照片”）</div>
+                <div class="img-grid">
+                <div class="img-card">
+                  <div class="img-head"><span>封面首图 · 00_cover_B_island_5pack.png</span><a class="mini-btn" href="./img/b/00_cover_B_island_5pack.jpg" download="00_cover_B_island_5pack.jpg">下载原图</a></div>
+                  <img src="./img/b/00_cover_B_island_5pack.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/00_cover_B_island_5pack.jpg';}" alt="00_cover_B_island_5pack.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 2 · B01_showcase_3x4.png</span><a class="mini-btn" href="./img/b/B01_showcase_3x4.jpg" download="B01_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/b/B01_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/B01_showcase_3x4.jpg';}" alt="B01_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 3 · B02_showcase_3x4.png</span><a class="mini-btn" href="./img/b/B02_showcase_3x4.jpg" download="B02_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/b/B02_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/B02_showcase_3x4.jpg';}" alt="B02_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 4 · B03_showcase_3x4.png</span><a class="mini-btn" href="./img/b/B03_showcase_3x4.jpg" download="B03_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/b/B03_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/B03_showcase_3x4.jpg';}" alt="B03_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 5 · B04_showcase_3x4.png</span><a class="mini-btn" href="./img/b/B04_showcase_3x4.jpg" download="B04_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/b/B04_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/B04_showcase_3x4.jpg';}" alt="B04_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 6 · B05_showcase_3x4.png</span><a class="mini-btn" href="./img/b/B05_showcase_3x4.jpg" download="B05_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/b/B05_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/b/B05_showcase_3x4.jpg';}" alt="B05_showcase_3x4.png" loading="lazy">
+                </div></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">② 商品标题（先选好再一键复制）</div>
+                <div class="chips">
+                  <button class="chip on" onclick="useTitle('prod_b', this)" data-title="苹果iOS灵动岛4K暗夜壁纸 B组黑猫柴犬机械风5套 拍下自动秒发">主推标题</button>
+                  <button class="chip" onclick="useTitle('prod_b', this)" data-title="iPhone灵动岛互动壁纸4K原图 黑猫雪鸮宇航柴犬陀飞轮 5套10张">备选标题 2</button><button class="chip" onclick="useTitle('prod_b', this)" data-title="苹果OLED纯黑灵动岛锁屏壁纸 暗夜精密机械萌宠 含磨砂主屏">备选标题 3</button>
+                </div>
+                <textarea class="box short" id="title-prod_b" readonly>苹果iOS灵动岛4K暗夜壁纸 B组黑猫柴犬机械风5套 拍下自动秒发</textarea>
+                <button class="big-btn dark" onclick="copyField('title-prod_b', '商品标题')">复制商品标题</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">③ 商品详情页文案（已过合规门禁，零外链/零禁用词）</div>
+                <textarea class="box tall" id="detail-prod_b" readonly>专门针对苹果顶部灵动岛胶囊位置做过暗场隐形与互动构图的 4K 壁纸套装（1290×2796），拍下系统自动发出整组原图，无需人工联系。
+
+【本组包含 5 套（共 10 张 4K 无水印 PNG 原图）】
+- B01 暗夜黑猫：顶部深黑底无缝隐去胶囊，小黑猫伸爪扒边张望
+- B02 雪夜小鸮：冬夜松枝横跨上方，胖雪鸮刚好蹲在胶囊正下方
+- B03 钛金陀飞轮：顶部金属卡槽对齐胶囊位，黑金蓝光精密机芯
+- B04 宇航柴犬：深空纯黑底色，穿着宇航服的小柴犬双手向上托举
+- B05 声呐棱镜：OLED 纯黑省电底色，极细几何刻度环绕顶部胶囊
+
+【每套都有 2 张配对图】
+1 张 4K 锁屏原图 + 1 张同色系深色高斯磨砂主屏图，解锁后桌面图标清清楚楚，夜间看屏幕也不刺眼。
+
+【使用提示】
+- 设为锁屏时双指轻微缩放到顶部黑边刚好托住屏幕上方胶囊位即可。
+- 虚拟数字图像拍下秒发后不支持退换，请看好预览图再下单。</textarea>
+                <button class="big-btn dark" onclick="copyField('detail-prod_b', '商品详情文案')">复制详情页文案</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">④ 小红书千帆「自动发货」固定内容（含本套餐专属夸克直链）</div>
+                <div class="url-pill">https://pan.quark.cn/s/4926269772f0</div>
+                <textarea class="box mid" id="delivery-prod_b" readonly>感谢下单「苹果 4K 灵动岛壁纸 · B 组暗夜机械 5 套（10 张原图）」！
+请点击下方夸克直链转存或下载全部原图（无提取码，含 B01-B05 锁屏+磨砂主屏与设置说明）：
+https://pan.quark.cn/s/4926269772f0
+
+原画质提醒：请在客户端点“下载原图”存到手机相册，不要直接长按网页缩略图。
+对齐技巧：设为墙纸时双指轻微缩放，让顶部纯黑区刚好托住屏幕上方胶囊，桌面搭配同编号磨砂主屏图效果更好。</textarea>
+                <div class="btn-row">
+                  <button class="big-btn orange" onclick="copyField('delivery-prod_b', '自动发货全文')">复制发货全文</button>
+                  <button class="big-btn ghost" onclick="copyPlain('https://pan.quark.cn/s/4926269772f0', '夸克直链')">仅复制链接</button>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">⑤ 本商品配套「小红书种草挂车笔记」（挂上方商品橱窗发）</div>
+                <label class="lbl">笔记标题</label>
+                <textarea class="box short" id="ntitle-prod_b" readonly>苹果灵动岛还是配这种纯黑互动壁纸顺眼</textarea>
+                <button class="big-btn dark" onclick="copyField('ntitle-prod_b', '笔记标题')">复制笔记标题</button>
+                <label class="lbl" style="margin-top:12px;">笔记正文（含话题标签）</label>
+                <textarea class="box tall" id="nbody-prod_b" readonly>灵动岛这颗黑胶囊放在亮色壁纸上总是很突兀，反过来只要把顶部底色压成深黑，再给下面留一点互动角色或机械结构，整个锁屏一下子就融进去了。
+
+自己搭了 5 套专攻灵动岛构图的 4K 暗夜原图：喜欢可爱风可以换扒边的暗夜黑猫、蹲在松枝上的雪夜小鸮，或者正手托举胶囊的宇航柴犬；偏爱硬朗质感的也有钛金陀飞轮和极细刻度的声呐棱镜，OLED 屏幕夜间看特别深邃。
+
+这组也给每张锁屏都配好了一张同色深色磨砂主屏，晚上滑到桌面图标干干净净不刺眼。
+
+整组 5 套共 10 张原图直接放小店橱窗了，拍下系统自动秒发，不用等客服在线。
+
+#灵动岛壁纸 #iPhone壁纸 #暗夜壁纸 #OLED壁纸 #苹果锁屏</textarea>
+                <button class="big-btn dark" onclick="copyField('nbody-prod_b', '笔记正文')">复制笔记正文</button>
+              </div>
+            </section>
+            <section class="panel" id="panel-prod_ab">
+              <div class="summary-card">
+                <div class="sum-top">
+                  <span class="sku-tag">SKU-XHS-WP-V1-ALL</span>
+                  <span class="price-tag">¥4.99</span>
+                </div>
+                <h2>A+B 全套 10 款打包（20 张 4K 原图·性价比最高）</h2>
+                <div class="check-row">
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_ab_shop', this.checked)" data-state="prod_ab_shop"> 商品已上架</label>
+                  <label class="chk"><input type="checkbox" onchange="toggleState('prod_ab_note', this.checked)" data-state="prod_ab_note"> 种草笔记已发</label>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">① 本商品专属上架图（共 7 张 · 苹果长按图片 0.5 秒选“存储到照片”）</div>
+                <div class="img-grid">
+                <div class="img-card">
+                  <div class="img-head"><span>封面首图 · 00_cover_AB_all10_pack.png</span><a class="mini-btn" href="./img/ab/00_cover_AB_all10_pack.jpg" download="00_cover_AB_all10_pack.jpg">下载原图</a></div>
+                  <img src="./img/ab/00_cover_AB_all10_pack.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/00_cover_AB_all10_pack.jpg';}" alt="00_cover_AB_all10_pack.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 2 · A01_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/A01_showcase_3x4.jpg" download="A01_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/A01_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/A01_showcase_3x4.jpg';}" alt="A01_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 3 · A02_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/A02_showcase_3x4.jpg" download="A02_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/A02_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/A02_showcase_3x4.jpg';}" alt="A02_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 4 · A04_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/A04_showcase_3x4.jpg" download="A04_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/A04_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/A04_showcase_3x4.jpg';}" alt="A04_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 5 · B01_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/B01_showcase_3x4.jpg" download="B01_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/B01_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/B01_showcase_3x4.jpg';}" alt="B01_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 6 · B03_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/B03_showcase_3x4.jpg" download="B03_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/B03_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/B03_showcase_3x4.jpg';}" alt="B03_showcase_3x4.png" loading="lazy">
+                </div>
+                <div class="img-card">
+                  <div class="img-head"><span>详情图 7 · B04_showcase_3x4.png</span><a class="mini-btn" href="./img/ab/B04_showcase_3x4.jpg" download="B04_showcase_3x4.jpg">下载原图</a></div>
+                  <img src="./img/ab/B04_showcase_3x4.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-7k2m9q4v/img/ab/B04_showcase_3x4.jpg';}" alt="B04_showcase_3x4.png" loading="lazy">
+                </div></div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">② 商品标题（先选好再一键复制）</div>
+                <div class="chips">
+                  <button class="chip on" onclick="useTitle('prod_ab', this)" data-title="苹果4K景深灵动岛壁纸全套10款共20张 原图无水印拍下秒发">主推标题</button>
+                  <button class="chip" onclick="useTitle('prod_ab', this)" data-title="iOS景深+灵动岛4K壁纸全集 10套锁屏配10张磨砂主屏 20张打包">备选标题 2</button><button class="chip" onclick="useTitle('prod_ab', this)" data-title="iPhone冬日景深与暗夜灵动岛壁纸合集 20张4K原图整包自动发">备选标题 3</button>
+                </div>
+                <textarea class="box short" id="title-prod_ab" readonly>苹果4K景深灵动岛壁纸全套10款共20张 原图无水印拍下秒发</textarea>
+                <button class="big-btn dark" onclick="copyField('title-prod_ab', '商品标题')">复制商品标题</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">③ 商品详情页文案（已过合规门禁，零外链/零禁用词）</div>
+                <textarea class="box tall" id="detail-prod_ab" readonly>一次打包带走 A 组冬日景深 5 款 + B 组灵动岛互动机械 5 款，共 10 套锁屏原图 + 10 张同色系高斯磨砂主屏图（合计 20 张 1290×2796 4K PNG 原图），拍下系统自动发出全部原图。
+
+【全套包含清单】
+A 组（12月冬日景深留白，可叠锁屏时间）：
+- A01 雪岭寒松 / A02 冬枝红柿 / A03 冰晶郁金香 / A04 初雪木屋 / A05 液态银川
+
+B 组（灵动岛深色融岛互动与精密机械）：
+- B01 暗夜黑猫 / B02 雪夜小鸮 / B03 钛金陀飞轮 / B04 宇航柴犬 / B05 声呐棱镜
+
+【全套优势】
+- 白天出门用 A 组清冷留白景深，晚上室内切 B 组 OLED 深色灵动岛，十天半个月换着不重样。
+- 全部配齐同色磨砂桌面底图，拍下即秒发整包原图。
+
+【使用提示】
+- A 组设锁屏时关闭“扩展墙纸”并微调位置再开“景深效果”；B 组轻微缩放对齐顶部胶囊即可。
+- 虚拟数字图像拍下秒发后不支持退换，请确认后下单。</textarea>
+                <button class="big-btn dark" onclick="copyField('detail-prod_ab', '商品详情文案')">复制详情页文案</button>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">④ 小红书千帆「自动发货」固定内容（含本套餐专属夸克直链）</div>
+                <div class="url-pill">https://pan.quark.cn/s/a238a0218d0b</div>
+                <textarea class="box mid" id="delivery-prod_ab" readonly>感谢下单「苹果 4K 景深灵动岛壁纸 · AB 全套 10 款（20 张原图）」！
+请点击下方夸克直链转存或下载全部原图（无提取码，内含 A01-B05 全 10 套锁屏+磨砂主屏及设置说明）：
+https://pan.quark.cn/s/a238a0218d0b
+
+原画质提醒：请在客户端点“下载原图”存到手机相册，不要直接长按网页缩略图。
+设置技巧：A 组先关闭“扩展墙纸”并微调位置让主体轻压时间下缘，再勾选“景深效果”；B 组微缩对齐灵动岛即可；每套均附带 _02_homescreen_blur.png 同色磨砂主屏。</textarea>
+                <div class="btn-row">
+                  <button class="big-btn orange" onclick="copyField('delivery-prod_ab', '自动发货全文')">复制发货全文</button>
+                  <button class="big-btn ghost" onclick="copyPlain('https://pan.quark.cn/s/a238a0218d0b', '夸克直链')">仅复制链接</button>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title">⑤ 本商品配套「小红书种草挂车笔记」（挂上方商品橱窗发）</div>
+                <label class="lbl">笔记标题</label>
+                <textarea class="box short" id="ntitle-prod_ab" readonly>冬天换手机壁纸，这 10 套景深加灵动岛够用好久了</textarea>
+                <button class="big-btn dark" onclick="copyField('ntitle-prod_ab', '笔记标题')">复制笔记标题</button>
+                <label class="lbl" style="margin-top:12px;">笔记正文（含话题标签）</label>
+                <textarea class="box tall" id="nbody-prod_ab" readonly>之前老是白天想用亮堂干净的冬日雪景，一到晚上躺在床上刷手机又嫌亮色壁纸刺眼，每次都要临时满相册翻图。
+
+这回索性把两套思路整理成了一个 10 款合集：一边是 A 组 5 张冬日景深留白，雪山寒松与红柿枝，连同冰晶郁金香、初雪木屋和液态银川，锁屏时间刚好压在山尖花梢前面；另一边是 B 组 5 张纯黑灵动岛互动和精密机械，黑猫雪鸮柴犬托举胶囊，外加暗夜陀飞轮和声呐雷达。
+
+全套一共 20 张 4K 无水印原图，10 张锁屏外加 10 张提前压好噪点的同色磨砂主屏，不用自己再调模糊。
+
+懒得纠结单选哪组的，直接下方的全套包一次拿走 20 张更省事，拍下自动秒发。
+
+#iPhone壁纸 #苹果壁纸 #景深壁纸 #灵动岛壁纸 #冬日锁屏</textarea>
+                <button class="big-btn dark" onclick="copyField('nbody-prod_ab', '笔记正文')">复制笔记正文</button>
+              </div>
+            </section></main>
+<div id="toast" class="toast">已复制</div>
+<script>
+const STATE_KEY = "xhs_wp_v1_mobile_state";
+function loadState() { try { return JSON.parse(localStorage.getItem(STATE_KEY) || "{}"); } catch { return {}; } }
+function saveState(s) { try { localStorage.setItem(STATE_KEY, JSON.stringify(s)); } catch {} }
+function toggleState(k, val) { const s = loadState(); s[k] = !!val; saveState(s); toast(val ? "已标记完成" : "已取消标记"); }
+function switchTab(pid) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === pid));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + pid));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function useTitle(pid, btn) {
+  btn.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('title-' + pid).value = btn.dataset.title;
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+function legacyCopy(txt) {
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch {}
+  document.body.removeChild(ta);
+  return ok;
+}
+function copyPlain(txt, label) {
+  if (legacyCopy(txt)) { toast('已复制' + label); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(() => toast('已复制' + label), () => toast('复制失败，请长按文本框全选'));
+  } else {
+    toast('复制失败，请长按文本框全选');
+  }
+}
+function copyField(id, label) {
+  const el = document.getElementById(id);
+  copyPlain(el.value, label);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const st = loadState();
+  document.querySelectorAll('input[data-state]').forEach(el => { el.checked = !!st[el.dataset.state]; });
+  // 将内嵌 base64 转为 Blob ObjectURL，确保手机端长按 0.5 秒稳妥弹出“存储到照片”
+  document.querySelectorAll('img[data-b64]').forEach(img => {
+    try {
+      const bin = atob(img.dataset.b64);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      const url = URL.createObjectURL(new Blob([arr], { type: img.dataset.mime || 'image/jpeg' }));
+      img.src = url;
+      const dl = img.parentElement.querySelector('a[data-dl-b64]');
+      if (dl) dl.href = url;
+    } catch {}
+  });
+});
+</script>
+</body>
+</html>
