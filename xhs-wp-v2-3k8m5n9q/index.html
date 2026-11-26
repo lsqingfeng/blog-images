@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<title>壁纸 V2 · 5G 手机发品台</title>
+<style>
+  :root { --bg:#F5F7FA; --card:#FFFFFF; --ink:#161A22; --muted:#647084; --line:#E3E8F0; --accent:#E85D3F; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--bg); color:var(--ink); padding-bottom:44px; }
+  header { position:sticky; top:0; z-index:30; background:rgba(255,255,255,0.96); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:12px 14px 10px; }
+  .head-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+  h1 { margin:0; font-size:17px; font-weight:700; }
+  .mode-pill { font-size:11px; color:var(--muted); background:#EEF2F7; padding:3px 8px; border-radius:999px; white-space:nowrap; }
+  .tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .tab-btn { border:1px solid var(--line); background:#F8FAFC; color:var(--ink); border-radius:12px; padding:9px 4px; font-size:12px; font-weight:700; cursor:pointer; }
+  .tab-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  main { max-width:680px; margin:0 auto; padding:12px; display:flex; flex-direction:column; gap:12px; }
+  .panel { display:none; flex-direction:column; gap:12px; }
+  .panel.active { display:flex; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; }
+  .card-title { font-size:14px; font-weight:700; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .badge { font-size:11px; color:#334155; background:#EEF2F7; padding:3px 8px; border-radius:999px; font-weight:600; }
+  .img-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .img-card { background:#F8FAFC; border:1px solid var(--line); border-radius:12px; padding:8px; display:flex; flex-direction:column; gap:6px; }
+  .img-head { display:flex; justify-content:space-between; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--muted); }
+  .img-card img { width:100%; border-radius:8px; display:block; -webkit-touch-callout:default; }
+  .mini-btn { flex-shrink:0; text-decoration:none; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:4px 8px; font-size:11px; font-weight:600; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .chip { border:1px solid var(--line); background:#F8FAFC; color:var(--ink); padding:5px 10px; border-radius:999px; font-size:12px; font-weight:600; cursor:pointer; }
+  .chip.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .box { width:100%; border:1px solid var(--line); border-radius:12px; padding:10px; font-family:inherit; font-size:13px; line-height:1.55; color:var(--ink); background:#FAFBFC; resize:none; }
+  .box.short { min-height:60px; }
+  .box.tall { min-height:220px; }
+  .lbl { display:block; font-size:12px; color:var(--muted); font-weight:600; margin:8px 0 4px; }
+  .big-btn { width:100%; margin-top:8px; border:0; border-radius:12px; padding:12px 10px; font-size:14px; font-weight:700; cursor:pointer; background:var(--ink); color:#fff; }
+  .big-btn.orange { background:var(--accent); }
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:rgba(22,26,34,0.92); color:#fff; padding:10px 18px; border-radius:999px; font-size:13px; font-weight:600; opacity:0; transition:opacity .18s; pointer-events:none; z-index:99; white-space:nowrap; }
+  .toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-top">
+    <h1>壁纸 V2 · 3D 裸眼错觉发品台</h1>
+    <span class="mode-pill">5G 云端直发 · 长按存图</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="imgs" onclick="switchTab('imgs')">① 长按存图</button>
+    <button class="tab-btn" data-tab="notes" onclick="switchTab('notes')">② 种草笔记</button>
+    <button class="tab-btn" data-tab="shop" onclick="switchTab('shop')">③ 上架文案</button>
+  </div>
+</header>
+<main>
+  <section class="panel active" id="panel-imgs">
+    <div class="card">
+      <div class="card-title"><span>3:4 真机实拍种草主图（长按 0.5 秒选存储到照片）</span><span class="badge">4 张主图</span></div>
+      <div class="img-grid">
+        <div class="img-card">
+          <div class="img-head"><span>M1 液态水银</span><a class="mini-btn" href="./img/m1_liquid_mercury.jpg" download="m1_liquid_mercury.jpg">保存</a></div>
+          <img src="./img/m1_liquid_mercury.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/m1_liquid_mercury.jpg';}" alt="m1_liquid_mercury" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>M2 黑曜石黑金</span><a class="mini-btn" href="./img/m2_obsidian_gold.jpg" download="m2_obsidian_gold.jpg">保存</a></div>
+          <img src="./img/m2_obsidian_gold.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/m2_obsidian_gold.jpg';}" alt="m2_obsidian_gold" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>M3 冰封水晶</span><a class="mini-btn" href="./img/m3_glacial_ice.jpg" download="m3_glacial_ice.jpg">保存</a></div>
+          <img src="./img/m3_glacial_ice.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/m3_glacial_ice.jpg';}" alt="m3_glacial_ice" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>M4 褶皱钛箔</span><a class="mini-btn" href="./img/m4_crumpled_titanium.jpg" download="m4_crumpled_titanium.jpg">保存</a></div>
+          <img src="./img/m4_crumpled_titanium.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/m4_crumpled_titanium.jpg';}" alt="m4_crumpled_titanium" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>9:19.5 无字锁屏原图预览</span><span class="badge">4 张原图</span></div>
+      <div class="img-grid">
+        <div class="img-card">
+          <div class="img-head"><span>W1 液态水银</span><a class="mini-btn" href="./img/w1_liquid_mercury.jpg" download="w1_liquid_mercury.jpg">保存</a></div>
+          <img src="./img/w1_liquid_mercury.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/w1_liquid_mercury.jpg';}" alt="w1_liquid_mercury" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>W2 黑曜石黑金</span><a class="mini-btn" href="./img/w2_obsidian_gold.jpg" download="w2_obsidian_gold.jpg">保存</a></div>
+          <img src="./img/w2_obsidian_gold.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/w2_obsidian_gold.jpg';}" alt="w2_obsidian_gold" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>W3 冰封水晶</span><a class="mini-btn" href="./img/w3_glacial_ice.jpg" download="w3_glacial_ice.jpg">保存</a></div>
+          <img src="./img/w3_glacial_ice.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/w3_glacial_ice.jpg';}" alt="w3_glacial_ice" loading="lazy">
+        </div>
+        <div class="img-card">
+          <div class="img-head"><span>W4 褶皱钛箔</span><a class="mini-btn" href="./img/w4_crumpled_titanium.jpg" download="w4_crumpled_titanium.jpg">保存</a></div>
+          <img src="./img/w4_crumpled_titanium.jpg" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://gcore.jsdelivr.net/gh/lsqingfeng/blog-images@main/xhs-wp-v2-3k8m5n9q/img/w4_crumpled_titanium.jpg';}" alt="w4_crumpled_titanium" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-notes">
+    <div class="card">
+      <div class="card-title"><span>种草笔记 1（液态金属主视觉）</span><span class="badge">一键复制</span></div>
+      <label class="lbl">笔记标题</label>
+      <textarea class="box short" id="n1-title" readonly>换完这张水银锁屏，手机像真能淌出水来</textarea>
+      <button class="big-btn" onclick="copyField('n1-title','笔记1标题')">复制笔记 1 标题</button>
+      <label class="lbl">笔记正文（含标签）</label>
+      <textarea class="box tall" id="n1-body" readonly>用久了扁平插画和风景照，总觉得锁屏少了点质感。最近试着把四周边缘做成厚重液态金属向内凸出的错觉构图，亮屏那一刻真有种屏幕玻璃里面裹着一团水银的立体感。
+
+做这版的时候特意避开了满屏乱闪的花纹，把中上方承接时钟的区域留成干净平滑的镜面过渡。换成 iOS 大号拉伸时间数字以后，数字下缘和边缘流银刚好接上，放在木桌面上亮屏看时间特别顺眼。
+
+一共整理了 4 张不同材质的同系列原图：亮银液态水银搭配黑曜石黑金，还有冰封水晶棱边和哑光褶皱钛箔。全部按照全面屏 9:19.5 比例单独修过边缘，图面干干净净没有假时间和水印。
+
+4 张高清无字原图打包放在小店里了，懒得自己裁图的可以直接去左下角看看。
+
+#iPhone壁纸 #苹果锁屏壁纸 #3D裸眼壁纸 #液态金属壁纸 #极简锁屏</textarea>
+      <button class="big-btn orange" onclick="copyField('n1-body','笔记1正文')">复制笔记 1 正文</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>种草笔记 2（材质对比与细节）</span><span class="badge">一键复制</span></div>
+      <label class="lbl">笔记标题</label>
+      <textarea class="box short" id="n2-title" readonly>以为手机屏幕被揉皱了，其实是这张钛箔壁纸</textarea>
+      <button class="big-btn" onclick="copyField('n2-title','笔记2标题')">复制笔记 2 标题</button>
+      <label class="lbl">笔记正文（含标签）</label>
+      <textarea class="box tall" id="n2-body" readonly>昨天放桌上亮屏的时候，旁边同事盯着看了半天问我是不是贴膜起皱了。其实就是换了这张褶皱钛箔的立体错觉壁纸，哑光拉丝的金属折痕顺着边框往里压，窗边有点自然光的时候看着跟真金属片一样。
+
+这一套一共做了 4 个不同质感，换着心情用正好够轮换：
+1. 液态水银，镜面反光很亮堂，适合浅色和原色边框手机
+2. 黑曜石黑金，深黑底配一圈暗香槟金高光，晚上看屏不刺眼
+3. 冰封水晶，边缘像整块冰雕出来的冷蓝折射，夏天冬天看着都清爽
+4. 褶皱钛箔，哑光银灰带立体折痕，中上方特意做平了方便看时间
+
+4 张全都是纯画质无字无水印原图，设为墙纸时把屏幕底部“扩展墙纸”关掉，双指稍微缩一点让边缘金属波纹贴紧边框，立体效果会更明显。小店里直接拍下就会自动发出。
+
+#裸眼3D壁纸 #苹果壁纸 #深色壁纸 #小众壁纸 #手机美化</textarea>
+      <button class="big-btn orange" onclick="copyField('n2-body','笔记2正文')">复制笔记 2 正文</button>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-shop">
+    <div class="card">
+      <div class="card-title"><span>小红书个人店上架标题</span><span class="badge">点击切换</span></div>
+      <div class="chips">
+        <button class="chip on" onclick="useTitle(this)" data-title="3D裸眼物理错觉手机壁纸 液态金属黑金冰晶钛箔 4张4K无字原图">主推标题</button>
+        <button class="chip" onclick="useTitle(this)" data-title="苹果iOS立体液态水银锁屏壁纸 黑金褶皱钛箔错觉 高清原图秒发">备选 2</button>
+        <button class="chip" onclick="useTitle(this)" data-title="裸眼3D液态金属壁纸合集 适配大号拉伸锁屏时钟 4款无水印原图">备选 3</button>
+        <button class="chip" onclick="useTitle(this)" data-title="极简金属质感4K全面屏壁纸 液态水银黑曜石冰晶钛箔 自动发货">备选 4</button>
+        <button class="chip" onclick="useTitle(this)" data-title="iPhone立体错觉锁屏壁纸 边缘凸出光影质感 4款超清无字原图">备选 5</button>
+      </div>
+      <textarea class="box short" id="shop-title" readonly>3D裸眼物理错觉手机壁纸 液态金属黑金冰晶钛箔 4张4K无字原图</textarea>
+      <button class="big-btn" onclick="copyField('shop-title','商品标题')">复制商品标题</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>个人店公开详情页文案</span><span class="badge">合规纯文本</span></div>
+      <textarea class="box tall" id="shop-detail" readonly>换一张真正有立体景深感的锁屏，不用再去网上找带水印的压缩截图了。这组 3D 裸眼物理错觉壁纸专为现代全面屏智能手机（9:19.5 比例）制作，拍下后系统 24 小时自动发货，手机端直接保存原画质即可使用。
+
+【4 款壁纸明细】
+1. 液态水银：四周厚重融化镜面铬金属向内翻涌，中上方平滑银白留白区方便显示拉伸大时钟。
+2. 黑曜石黑金：深邃纯黑液态金属波纹环绕四周，边缘带流动暗香槟金高光，深色模式省电耐看。
+3. 冰封水晶：边缘呈现厚壁冷蓝冰块与透明液态玻璃折射质感，中上方冷白雾面过渡干净利落。
+4. 褶皱钛箔：逼真哑光拉丝银灰钛金属揉皱折痕立体光影，上中部相对平缓，兼顾错觉张力与读数清晰度。
+
+【发货规格说明】
+1. 全套共 4 张超清 PNG 无字原图，无任何模拟时间数字、状态栏图标或水印遮挡。
+2. 兼容苹果 iOS（含大号拉伸时间样式）与主流安卓全面屏手机，手机电脑即开即用。
+
+【使用建议与说明】
+1. 设为锁屏墙纸时，建议先关闭系统“扩展墙纸”开关，双指微调缩放让四周立体纹理贴合手机边框。
+2. 虚拟数字图像拍下自动发出后不支持退换，请确认喜欢当前 4 款风格后再下单。</textarea>
+      <button class="big-btn orange" onclick="copyField('shop-detail','商品详情文案')">复制详情页文案</button>
+    </div>
+  </section>
+</main>
+<div id="toast" class="toast">已复制</div>
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + id));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function useTitle(btn) {
+  btn.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('shop-title').value = btn.dataset.title;
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+function legacyCopy(txt) {
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch {}
+  document.body.removeChild(ta);
+  return ok;
+}
+function copyPlain(txt, label) {
+  if (legacyCopy(txt)) { toast('已复制' + label); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(() => toast('已复制' + label), () => toast('复制失败，请长按文本框全选'));
+  } else {
+    toast('复制失败，请长按文本框全选');
+  }
+}
+function copyField(id, label) { copyPlain(document.getElementById(id).value, label); }
+</script>
+</body>
+</html>
